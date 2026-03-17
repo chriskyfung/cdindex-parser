@@ -16,7 +16,22 @@ def parse_file_line(line):
         if ts < 0:
             dt = "1970-01-01T00:00:00"
         else:
-            dt = datetime.fromtimestamp(ts).strftime('%Y-%m-%dT%H:%M:%S')
+            # FAT timestamp decoding (dosdate)
+            dos_time = ts & 0xFFFF
+            dos_date = ts >> 16
+
+            sec = (dos_time & 0x1F) * 2
+            minute = (dos_time >> 5) & 0x3F
+            hour = dos_time >> 11
+
+            day = dos_date & 0x1F
+            month = (dos_date >> 5) & 0xF
+            year = (dos_date >> 9) + 1980
+            
+            try:
+                dt = datetime(year, month, day, hour, minute, sec).strftime('%Y-%m-%dT%H:%M:%S')
+            except ValueError:
+                dt = "1970-01-01T00:00:00" # Invalid date
         return dict(indent=indent, type=t, size=size, ts=ts, ts_str=dt)
     else:
         raise ValueError("not D/F line")
