@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cdindex-parser"
+version = "0.1.0"
+description = "Parse CD Index 2 IDX/FILE files into CSV/JSON"
+authors = [{name = "Chris K.Y. Fung"}]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+]
+
+[tool.licensecheck]
+license = "MIT"
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.format]
+quote-style = "double"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov",
+    "mypy",
+    "ruff",
+    "build",
+    "twine",
+    "pre-commit",
+    "licensecheck"
+]
+
+[project.scripts]
+cdindex = "scripts.decode_cdindex:main"

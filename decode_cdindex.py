@@ -1,0 +1,71 @@
+import sys
+from datetime import datetime
+
+def parse_file_line(line):
+    # strip leading tabs first
+    stripped = line.lstrip('\t')
+    indent = len(line) - len(stripped)
+    s = stripped.rstrip('\n\r')
+    if s.startswith('D') or s.startswith('F'):
+        t = s[0]
+        size_part, ts_part = s[1:].split('.', 1)
+        size = int(size_part)
+        ts = int(ts_part)
+        dt = datetime.utcfromtimestamp(ts).strftime('%Y-%m-%dT%H:%M:%S')
+        return dict(indent=indent, type=t, size=size, ts=ts, ts_str=dt)
+    else:
+        raise ValueError("not D/F line")
+
+def parse_name_line(line):
+    stripped = line.lstrip('\t')
+    indent = len(line) - len(stripped)
+    name = stripped.rstrip('\n\r')
+    return dict(indent=indent, name=name)
+
+def match_and_dump(input_path, out_path):
+    recs = []
+    idx_path, file_path = input_path + '.IDX', input_path + '.FILE'
+
+    with open(file_path, 'r', encoding='big5', errors='replace') as f:
+        file_lines = f.readlines()
+    with open(idx_path, 'r', encoding='big5', errors='replace') as f:
+        idx_lines = f.readlines()
+
+    assert len(file_lines) == len(idx_lines), "line count mismatch"
+
+    for i in range(len(idx_lines)):
+        fld = parse_file_line(file_lines[i])
+        named = parse_name_line(idx_lines[i])
+        assert fld['indent'] == named['indent'], "indent mismatch at line %d" % i
+        recs.append({
+            'depth': named['indent'],
+            'name': named['name'],
+            'is_dir': (fld['type'] == 'D'),
+            'size_bytes': fld['size'],
+            'mtime_ts': fld['ts'],
+            'mtime_str': fld['ts_str'],
+        })
+
+    # Optional: walk the tree and print as CSV
+    with open(out_path, 'w', encoding='utf-8') as f:
+        f.write('FullPath,IsDir,SizeBytes,MtimeStr\n')
+        stack = []  # path components
+        for r in recs:
+            depth = r['depth']
+            while len(stack) > depth:
+                stack.pop()
+            stack.append(r['name'])
+            path = '/'.join(stack)
+            is_dir = '1' if r['is_dir'] else '0'
+            f.write(f'{path},{is_dir},{r["size_bytes"]},{r["mtime_str"]}\n')
+
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: python decode_cdindex.py <input_file> <output_csv>")
+        sys.exit(1)
+    input_path = sys.argv[1]
+    out_path = sys.argv[2]
+    match_and_dump(input_path, out_path)
+
+if __name__ == "__main__":
+    main()
