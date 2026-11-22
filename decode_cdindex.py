@@ -1,15 +1,16 @@
-import sys
 import csv
+import sys
 from datetime import datetime
+
 
 def parse_file_line(line):
     # strip leading tabs first
-    stripped = line.lstrip('\t')
+    stripped = line.lstrip("\t")
     indent = len(line) - len(stripped)
-    s = stripped.rstrip('\n\r')
-    if s.startswith('D') or s.startswith('F'):
+    s = stripped.rstrip("\n\r")
+    if s.startswith("D") or s.startswith("F"):
         t = s[0]
-        size_part, ts_part = s[1:].split('.', 1)
+        size_part, ts_part = s[1:].split(".", 1)
         size = int(size_part)
         ts = int(ts_part)
         # Handle invalid timestamps (e.g., -1)
@@ -27,28 +28,32 @@ def parse_file_line(line):
             day = dos_date & 0x1F
             month = (dos_date >> 5) & 0xF
             year = (dos_date >> 9) + 1980
-            
+
             try:
-                dt = datetime(year, month, day, hour, minute, sec).strftime('%Y-%m-%dT%H:%M:%S')
+                dt = datetime(year, month, day, hour, minute, sec).strftime(
+                    "%Y-%m-%dT%H:%M:%S"
+                )
             except ValueError:
-                dt = "1970-01-01T00:00:00" # Invalid date
+                dt = "1970-01-01T00:00:00"  # Invalid date
         return dict(indent=indent, type=t, size=size, ts=ts, ts_str=dt)
     else:
         raise ValueError("not D/F line")
 
+
 def parse_name_line(line):
-    stripped = line.lstrip('\t')
+    stripped = line.lstrip("\t")
     indent = len(line) - len(stripped)
-    name = stripped.rstrip('\n\r')
+    name = stripped.rstrip("\n\r")
     return dict(indent=indent, name=name)
+
 
 def match_and_dump(input_path, out_path):
     recs = []
-    idx_path, file_path = input_path + '.IDX', input_path + '.FILE'
+    idx_path, file_path = input_path + ".IDX", input_path + ".FILE"
 
-    with open(file_path, 'r', encoding='utf-16', errors='replace') as f:
+    with open(file_path, "r", encoding="utf-16", errors="replace") as f:
         file_lines = f.readlines()
-    with open(idx_path, 'r', encoding='utf-16', errors='replace') as f:
+    with open(idx_path, "r", encoding="utf-16", errors="replace") as f:
         idx_lines = f.readlines()
 
     # Filter out empty lines
@@ -60,29 +65,32 @@ def match_and_dump(input_path, out_path):
     for i in range(len(idx_lines)):
         fld = parse_file_line(file_lines[i])
         named = parse_name_line(idx_lines[i])
-        assert fld['indent'] == named['indent'], "indent mismatch at line %d" % i
-        recs.append({
-            'depth': named['indent'],
-            'name': named['name'],
-            'is_dir': (fld['type'] == 'D'),
-            'size_bytes': fld['size'],
-            'mtime_ts': fld['ts'],
-            'mtime_str': fld['ts_str'],
-        })
+        assert fld["indent"] == named["indent"], "indent mismatch at line %d" % i
+        recs.append(
+            {
+                "depth": named["indent"],
+                "name": named["name"],
+                "is_dir": (fld["type"] == "D"),
+                "size_bytes": fld["size"],
+                "mtime_ts": fld["ts"],
+                "mtime_str": fld["ts_str"],
+            }
+        )
 
     # Optional: walk the tree and print as CSV
-    with open(out_path, 'w', encoding='utf-8', newline='') as f:
+    with open(out_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(['FullPath', 'IsDir', 'SizeBytes', 'MtimeStr'])
+        writer.writerow(["FullPath", "IsDir", "SizeBytes", "MtimeStr"])
         stack = []  # path components
         for r in recs:
-            depth = r['depth']
+            depth = r["depth"]
             while len(stack) > depth:
                 stack.pop()
-            stack.append(r['name'])
-            path = '/'.join(stack)
-            is_dir = '1' if r['is_dir'] else '0'
-            writer.writerow([path, is_dir, r['size_bytes'], r['mtime_str']])
+            stack.append(r["name"])
+            path = "/".join(stack)
+            is_dir = "1" if r["is_dir"] else "0"
+            writer.writerow([path, is_dir, r["size_bytes"], r["mtime_str"]])
+
 
 def main():
     if len(sys.argv) != 3:
@@ -91,6 +99,7 @@ def main():
     input_path = sys.argv[1]
     out_path = sys.argv[2]
     match_and_dump(input_path, out_path)
+
 
 if __name__ == "__main__":
     main()
