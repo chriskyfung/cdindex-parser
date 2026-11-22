@@ -16,7 +16,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- N/A
+- Updated return type of `parse_file_line` and `parse_name_line` to consistent dict literals
+- Switched `startswith` check to tuple syntax for cleaner condition
+- Updated assertion error message to use f-string formatting
 
 ### Fixed
 
