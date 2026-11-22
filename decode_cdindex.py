@@ -8,7 +8,7 @@ def parse_file_line(line):
     stripped = line.lstrip("\t")
     indent = len(line) - len(stripped)
     s = stripped.rstrip("\n\r")
-    if s.startswith("D") or s.startswith("F"):
+    if s.startswith(("D", "F")):
         t = s[0]
         size_part, ts_part = s[1:].split(".", 1)
         size = int(size_part)
@@ -35,7 +35,7 @@ def parse_file_line(line):
                 )
             except ValueError:
                 dt = "1970-01-01T00:00:00"  # Invalid date
-        return dict(indent=indent, type=t, size=size, ts=ts, ts_str=dt)
+        return {"indent": indent, "type": t, "size": size, "ts": ts, "ts_str": dt}
     else:
         raise ValueError("not D/F line")
 
@@ -44,7 +44,7 @@ def parse_name_line(line):
     stripped = line.lstrip("\t")
     indent = len(line) - len(stripped)
     name = stripped.rstrip("\n\r")
-    return dict(indent=indent, name=name)
+    return {"indent": indent, "name": name}
 
 
 def match_and_dump(input_path, out_path):
@@ -65,7 +65,7 @@ def match_and_dump(input_path, out_path):
     for i in range(len(idx_lines)):
         fld = parse_file_line(file_lines[i])
         named = parse_name_line(idx_lines[i])
-        assert fld["indent"] == named["indent"], "indent mismatch at line %d" % i
+        assert fld["indent"] == named["indent"], f"indent mismatch at line {i}"
         recs.append(
             {
                 "depth": named["indent"],
