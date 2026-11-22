@@ -49,6 +49,7 @@ def parse_name_line(line):
 
 def match_and_dump(input_path, out_path):
     recs = []
+    input_path = input_path.rstrip('.IDX').rstrip('.FILE')
     idx_path, file_path = input_path + ".IDX", input_path + ".FILE"
 
     with open(file_path, "r", encoding="utf-16", errors="replace") as f:
