@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "cdindex-parser"
@@ -9,7 +9,7 @@ description = "Parse CD Index 2 IDX/FILE files into CSV/JSON"
 authors = [{name = "Chris K.Y. Fung"}]
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
 ]
 
