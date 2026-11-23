@@ -21,7 +21,7 @@ theme:
     - content.code.annotate
     - search.suggest
     - search.highlight
-  logo: https://raw.githubusercontent.com/chriskyfung/cdindex-parser/main/docs/logo.svg
+  logo: https://raw.githubusercontent.com/chriskyfung/cdindex-parser/main/docs/logo.png
   favicon: https://raw.githubusercontent.com/chriskyfung/cdindex-parser/main/docs/favicon.ico
 
 plugins:
