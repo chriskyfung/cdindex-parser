@@ -1,41 +1,94 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "cdindex-parser"
-version = "0.2.1"
+version = "1.0.0"
 description = "Parse CD Index 2 IDX/FILE files into CSV/JSON"
-authors = [{name = "Chris K.Y. Fung"}]
-license = {file = "LICENSE"}
+authors = [{name = "Chris Fung", email = "chris@example.com"}]
+license = "MIT"
+license-files = ["LICENSE"]
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
+dependencies = []
+keywords = ["cd-index", "cdindex", "parser", "csv", "json", "legacy", "dosdate", "big5"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Utilities",
+    "Typing :: Typed",
 ]
 
-[tool.licensecheck]
-license = "MIT"
+
 
 [tool.pytest.ini_options]
-pythonpath = "src"
-
+minversion = "8.0"
+addopts = "-ra --strict-markers --strict-config"
+testpaths = ["tests"]
+pythonpath = ["src"]
+xfail_strict = true
+filterwarnings = ["error"]
 [tool.ruff]
 line-length = 88
+target-version = "py310"
+src = ["src", "tests"]
 
-[tool.ruff.format]
-quote-style = "double"
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF", "D", "PT", "S"]
+ignore = ["D203", "D213"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "S101", "PLR2004"]
+
+[tool.coverage.run]
+branch = true
+source = ["cdindex_parser"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.0",
-    "pytest-cov",
-    "mypy",
-    "ruff",
-    "build",
-    "twine",
-    "pre-commit",
-    "licensecheck"
+    "pytest>=8",
+    "pytest-cov>=5",
+    "coverage[toml]>=7",
+    "mypy>=1.11",
+    "ruff>=0.6",
+    "build>=1.2",
+    "twine>=5",
+    "pre-commit>=3.8",
 ]
+docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.26"]
 
 [project.scripts]
-cdindex = "scripts.decode_cdindex:main"
+cdindex-parser = "cdindex_parser.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/chriskyfung/cdindex-parser"
+Documentation = "https://chriskyfung.github.io/cdindex-parser/"
+Repository = "https://github.com/chriskyfung/cdindex-parser"
+Issues = "https://github.com/chriskyfung/cdindex-parser/issues"
+Changelog = "https://github.com/chriskyfung/cdindex-parser/blob/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["cdindex_parser*"]
+
+[tool.setuptools.package-data]
+cdindex_parser = ["py.typed"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src"]
+strict = true
+warn_unreachable = true
