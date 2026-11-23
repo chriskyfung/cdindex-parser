@@ -19,14 +19,15 @@ def resolve_input_path(input_path: str) -> tuple[str, str]:
     """
     p = Path(input_path)
     stem = p.name
-    if stem.endswith(".IDX"):
+    lower = stem.lower()
+    if lower.endswith(".idx"):
         stem = stem[:-4]  # strip .IDX  (4 chars)
-    elif stem.endswith(".FILE"):
+    elif lower.endswith(".file"):
         stem = stem[:-5]  # strip .FILE (5 chars)
     # else: keep the original stem (base name only)
     base = p.parent / stem if p.parent else Path(stem)
-    idx_path = str(base.with_suffix(".IDX"))
-    file_path = str(base.with_suffix(".FILE"))
+    idx_path = str(base) + ".IDX"
+    file_path = str(base) + ".FILE"
     return idx_path, file_path
 
 
