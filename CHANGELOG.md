@@ -4,7 +4,43 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-11-24
+
+### Added
+
+- Typed public API with frozen dataclasses (`Catalog`, `Entry`, `FileRecord`, `NameRecord`)
+- `src/cdindex_parser/` package layout with `py.typed` marker (PEP 561)
+- `cdindex-parser` console script with argparse CLI (`--encoding`, `--format`, `--version`)
+- JSON export (`to_json`) alongside existing CSV export (`to_csv`)
+- Configurable input encoding (UTF-16 default, Big5, CP950 supported)
+- `resolve_input_path()` helper fixing silent name corruption bug
+- `decode_dos_datetime()` utility for FAT timestamp decoding
+- Comprehensive test suite (75 tests, 93% branch coverage)
+- CI/CD pipeline: lint, Linux+Windows test matrix (3.10–3.14), build/smoke, CI gate
+- Release workflow: TestPyPI → PyPI → GitHub Release via trusted publishing
+- MkDocs Material documentation site with auto-generated API reference
+- `.gitattributes`, `.pre-commit-config.yaml`, issue/PR templates
+
+### Changed
+
+- Migrated from root-level `decode_cdindex.py` script to `src/cdindex_parser` package
+- Replaced `dict` returns with typed dataclasses (`FileRecord`, `NameRecord`, `Entry`, `Catalog`)
+- Replaced `assert` flow control with typed exceptions (`LineCountMismatchError`, `IndentMismatchError`, `MalformedRecordError`)
+- Renamed CLI from `decode_cdindex.py` to `cdindex-parser`
+- Renamed console script entry point from `scripts.decode_cdindex` to `cdindex_parser.cli:main`
+- Bumped minimum Python to 3.10
+- Switched license metadata to PEP 639 SPDX form (`license = "MIT"` + `license-files`)
+
+### Fixed
+
+- `resolve_input_path()` no longer corrupts names like `MyID.IDX` → `My` (was `str.rstrip()` character-set bug)
+- Case-insensitive `.IDX`/`.FILE` suffix matching
+- Dotted base names (e.g. `archive.1.IDX`) no longer truncated by `Path.with_suffix()`
+- `__main__` entry point guarded with `if __name__ == "__main__":`
+
+### Removed
+
+- Root-level `decode_cdindex.py` script (replaced by package)
 
 ## [0.2.1] - 2026-11-23
 
