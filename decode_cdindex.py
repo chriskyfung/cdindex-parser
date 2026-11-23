@@ -1,6 +1,30 @@
 import csv
 import sys
 from datetime import datetime
+from pathlib import Path
+
+
+def resolve_input_path(input_path: str) -> tuple[str, str]:
+    """Convert a base path or suffixed path into (.IDX path, .FILE path).
+
+    The old code used ``input_path.rstrip('.IDX').rstrip('.FILE')`` which
+    treats the argument as a *character set*, corrupting names like
+    ``MyID.IDX`` → ``My`` and ``GAME.IDX`` → ``GAM``.
+
+    This function correctly strips only the recognised suffixes and
+    guarantees the returned pair has the same base name.
+    """
+    p = Path(input_path)
+    stem = p.name
+    if stem.endswith(".IDX"):
+        stem = stem[:-4]          # strip .IDX  (4 chars)
+    elif stem.endswith(".FILE"):
+        stem = stem[:-5]          # strip .FILE (5 chars)
+    # else: keep the original stem (base name only)
+    base = p.parent / stem if p.parent else Path(stem)
+    idx_path = str(base.with_suffix(".IDX"))
+    file_path = str(base.with_suffix(".FILE"))
+    return idx_path, file_path
 
 
 def parse_file_line(line):
@@ -49,8 +73,7 @@ def parse_name_line(line):
 
 def match_and_dump(input_path, out_path):
     recs = []
-    input_path = input_path.rstrip('.IDX').rstrip('.FILE')
-    idx_path, file_path = input_path + ".IDX", input_path + ".FILE"
+    idx_path, file_path = resolve_input_path(input_path)
 
     with open(file_path, "r", encoding="utf-16", errors="replace") as f:
         file_lines = f.readlines()
