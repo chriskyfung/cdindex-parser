@@ -139,9 +139,10 @@ class TestResolveInputPath:
         assert fle == "mydisk.FILE"
 
     def test_with_directory(self):
-        idx, fle = resolve_input_path("/home/user/data.mydisk.IDX")
-        assert idx == "/home/user/data.mydisk.IDX"
-        assert fle == "/home/user/data.mydisk.FILE"
+        base = Path("/home/user/data.mydisk")
+        idx, fle = resolve_input_path(str(base) + ".IDX")
+        assert idx == str(base) + ".IDX"
+        assert fle == str(base) + ".FILE"
 
 
 class TestParseCatalog:

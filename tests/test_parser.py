@@ -52,9 +52,10 @@ class TestResolveInputPath:
         assert file == "mydisk.FILE"
 
     def test_with_directory(self):
-        idx, file = resolve_input_path("/home/user/data.mydisk.IDX")
-        assert idx == "/home/user/data.mydisk.IDX"
-        assert file == "/home/user/data.mydisk.FILE"
+        base = Path("/home/user/data.mydisk")
+        idx, file = resolve_input_path(str(base) + ".IDX")
+        assert idx == str(base) + ".IDX"
+        assert file == str(base) + ".FILE"
 
     def test_dotted_base_name(self):
         idx, file = resolve_input_path("archive.1.IDX")
