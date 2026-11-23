@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cdindex-parser"
-version = "0.3.0"
+version = "1.0.0"
 description = "Parse CD Index 2 IDX/FILE files into CSV/JSON"
 authors = [{name = "Chris Fung", email = "chris@example.com"}]
 license = "MIT"
