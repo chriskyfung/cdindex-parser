@@ -97,6 +97,50 @@ def main(argv: Sequence[str] | None = None) -> int:
        __version__ = "0.0.0+unknown"
 
    __all__ = [
+       "Catalog", "Entry", "FileRecord", "NameRecord",
+       "parse_catalog", "resolve_input_path",
+       "to_csv", "to_json", "__version__",
+   ]
+   ```
+
+   **`src/cdindex_parser/__main__.py`** — `python -m cdindex_parser` entry point:
+   ```python
+   """Module entry point for python -m cdindex_parser."""
+   from .cli import main
+
+   if __name__ == "__main__":
+       raise SystemExit(main())
+   ```
+
+   **`src/cdindex_parser/py.typed`** — empty file, PEP 561 marker for typed packages:
+   ```bash
+   touch src/cdindex_parser/py.typed
+   ```
+
+**Pitfall:** `__main__.py` must guard `raise SystemExit(main())` with `if __name__ == "__main__":`, otherwise importing the module triggers program exit.
+
+---
+
+## Step 3: Refactor into modules
+
+Split the monolith into responsibility-separated modules:
+
+| Module | Responsibility |
+|---|---|
+| `errors.py` | Typed exception hierarchy (`CDIndexError`, `*Error` suffix) |
+| `models.py` | Frozen dataclasses (`Catalog`, `Entry`, `FileRecord`, `NameRecord`) |
+| `parser.py` | Pure parsing: `parse_catalog`, `parse_file_line`, `parse_name_line`, `decode_dos_datetime`, `resolve_input_path` |
+| `tree.py` | Stack-based path reconstruction (`build_paths`) |
+| `exporters.py` | `to_csv`, `to_json`, `iter_rows` |
+| `cli.py` | argparse CLI with `--encoding`, `--format`, `--version` |
+
+**Pitfall:** Do not mix refactoring with behavior changes. Keep each module commit atomic — one logical change per commit.
+
+**Pitfall:** Replace `assert` statements used for control flow (line-count mismatch, indent mismatch) with typed exceptions. `assert` is stripped under `python -O`.
+
+**Pitfall:** Replace `str.rstrip('.IDX')` (treats argument as a character set — corrupts `MyID.IDX` → `My`) with proper suffix stripping using `endswith` + slicing, case-insensitive.
+
+**Pitfall:** Do not use `Path.with_suffix()` on dotted base names (e.g. `archive.1.IDX` → `archive.IDX`). Use `str(base) + ".IDX"` instead.
 
 ---
 
@@ -232,49 +276,3 @@ mkdocs build --strict
 ```
 
 If any check fails, fix it before committing. Do not merge with red checks.
-
----
-       "Catalog", "Entry", "FileRecord", "NameRecord",
-       "parse_catalog", "resolve_input_path",
-       "to_csv", "to_json", "__version__",
-   ]
-   ```
-
-   **`src/cdindex_parser/__main__.py`** — `python -m cdindex_parser` entry point:
-   ```python
-   """Module entry point for python -m cdindex_parser."""
-   from .cli import main
-
-   if __name__ == "__main__":
-       raise SystemExit(main())
-   ```
-
-   **`src/cdindex_parser/py.typed`** — empty file, PEP 561 marker for typed packages:
-   ```bash
-   touch src/cdindex_parser/py.typed
-   ```
-
-**Pitfall:** `__main__.py` must guard `raise SystemExit(main())` with `if __name__ == "__main__":`, otherwise importing the module triggers program exit.
-
----
-
-## Step 3: Refactor into modules
-
-Split the monolith into responsibility-separated modules:
-
-| Module | Responsibility |
-|---|---|
-| `errors.py` | Typed exception hierarchy (`CDIndexError`, `*Error` suffix) |
-| `models.py` | Frozen dataclasses (`Catalog`, `Entry`, `FileRecord`, `NameRecord`) |
-| `parser.py` | Pure parsing: `parse_catalog`, `parse_file_line`, `parse_name_line`, `decode_dos_datetime`, `resolve_input_path` |
-| `tree.py` | Stack-based path reconstruction (`build_paths`) |
-| `exporters.py` | `to_csv`, `to_json`, `iter_rows` |
-| `cli.py` | argparse CLI with `--encoding`, `--format`, `--version` |
-
-**Pitfall:** Do not mix refactoring with behavior changes. Keep each module commit atomic — one logical change per commit.
-
-**Pitfall:** Replace `assert` statements used for control flow (line-count mismatch, indent mismatch) with typed exceptions. `assert` is stripped under `python -O`.
-
-**Pitfall:** Replace `str.rstrip('.IDX')` (treats argument as a character set — corrupts `MyID.IDX` → `My`) with proper suffix stripping using `endswith` + slicing, case-insensitive.
-
-**Pitfall:** Do not use `Path.with_suffix()` on dotted base names (e.g. `archive.1.IDX` → `archive.IDX`). Use `str(base) + ".IDX"` instead.

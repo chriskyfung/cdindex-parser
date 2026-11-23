@@ -79,7 +79,7 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: pip install -e ".[dev]"
       - run: pytest --cov=cdindex_parser --cov-branch --cov-report=xml --junitxml=junit.xml
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: test-${{ matrix.os }}-${{ matrix.python-version }}
@@ -97,6 +97,33 @@ jobs:
       - run: python -m build
       - run: twine check dist/*
       - run: |
+          python -m venv /tmp/venv
+          /tmp/venv/bin/pip install dist/*.whl
+          /tmp/venv/bin/cdindex-parser --help
+          /tmp/venv/bin/python -c "import cdindex_parser; print(cdindex_parser.__version__)"
+        shell: bash
+      - uses: actions/upload-artifact@v7
+        with: { name: dist, path: dist/ }
+
+  ci-success:
+    name: CI success gate
+    if: always()
+    needs: [lint, test, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: |
+          [ "${{ needs.lint.result }}"  = "success" ] && \
+          [ "${{ needs.test.result }}"  = "success" ] && \
+          [ "${{ needs.build.result }}" = "success" ] || \
+          (echo "CI failed" && exit 1)
+```
+
+**Pitfall:** The `ci-success` gate job is what branch protection requires. Matrix job names can change freely; only `ci-success` is referenced by protection rules.
+
+**Pitfall:** Use `actions/checkout@v7` and `actions/setup-python@v7` (not v4/v5, which had been outdated).
+
+**Pitfall:** `fail-fast: false` so one OS/Python combo failure doesn't cancel others.
 
 ---
 
@@ -131,7 +158,7 @@ jobs:
           [ "$TAG" = "$VER" ] || { echo "tag $TAG != pyproject $VER"; exit 1; }
       - run: python -m build
       - run: twine check dist/*
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: dist, path: dist/ }
 
   publish-testpypi:
@@ -141,7 +168,7 @@ jobs:
     environment: testpypi
     permissions: { id-token: write }
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with: { name: dist, path: dist/ }
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
@@ -156,7 +183,7 @@ jobs:
     permissions: { id-token: write }
     if: ${{ !contains(github.ref_name, '-') }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with: { name: dist, path: dist/ }
       - uses: pypa/gh-action-pypi-publish@release/v1
 
@@ -166,7 +193,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: { contents: write }
     steps:
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with: { generate_release_notes: true }
 ```
 
@@ -187,6 +214,51 @@ jobs:
 name: Docs
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "src/**"
+      - "mkdocs.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Deploy docs to GitHub Pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with: { python-version: "3.13", cache: "pip" }
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[docs]"
+      - run: mkdocs gh-deploy --force
+```
+
+**Pitfall:** GitHub Pages must be enabled in repository settings (Settings → Pages → Build and deployment → Source: GitHub Actions).
+
+**Pitfall:** `permissions: contents: write` required for `mkdocs gh-deploy` to push to `gh-pages` branch.
+
+---
+
+## Step 4: Create Dependabot config (`.github/dependabot.yml`)
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 5
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule: { interval: "weekly" }
+    open-pull-requests-limit: 5
+```
 
 ---
 
@@ -272,81 +344,3 @@ JSON
 **Pitfall:** If the tag doesn't match `pyproject.toml` version, the build job fails. Fix version mismatch and retag.
 
 **Pitfall:** TestPyPI and PyPI are separate indexes. A package published to TestPyPI won't appear on PyPI until the `publish-pypi` job runs.
-
----
-  push:
-    branches: [main]
-    paths:
-      - "docs/**"
-      - "src/**"
-      - "mkdocs.yml"
-
-permissions:
-  contents: write
-
-jobs:
-  deploy:
-    name: Deploy docs to GitHub Pages
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
-        with: { python-version: "3.13", cache: "pip" }
-      - run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[docs]"
-      - run: mkdocs gh-deploy --force
-```
-
-**Pitfall:** GitHub Pages must be enabled in repository settings (Settings → Pages → Build and deployment → Source: GitHub Actions).
-
-**Pitfall:** `permissions: contents: write` required for `mkdocs gh-deploy` to push to `gh-pages` branch.
-
----
-
-## Step 4: Create Dependabot config (`.github/dependabot.yml`)
-
-```yaml
-version: 2
-updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule: { interval: "weekly" }
-    open-pull-requests-limit: 5
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule: { interval: "weekly" }
-    open-pull-requests-limit: 5
-```
-
----
-          python -m venv /tmp/venv
-          /tmp/venv/bin/pip install dist/*.whl
-          /tmp/venv/bin/cdindex-parser --help
-          /tmp/venv/bin/python -c "import cdindex_parser; print(cdindex_parser.__version__)"
-        shell: bash
-      - uses: actions/upload-artifact@v4
-        with: { name: dist, path: dist/ }
-
-  ci-success:
-    name: CI success gate
-    if: always()
-    needs: [lint, test, build]
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - run: |
-          [ "${{ needs.lint.result }}"  = "success" ] && \
-          [ "${{ needs.test.result }}"  = "success" ] && \
-          [ "${{ needs.build.result }}" = "success" ] || \
-          (echo "CI failed" && exit 1)
-```
-
-**Pitfall:** The `ci-success` gate job is what branch protection requires. Matrix job names can change freely; only `ci-success` is referenced by protection rules.
-
-**Pitfall:** Use `actions/checkout@v7` and `actions/setup-python@v7` (not v4/v5, which had outdated).
-
-**Pitfall:** `fail-fast: false` so one OS/Python combo failure doesn't cancel others.
-
----

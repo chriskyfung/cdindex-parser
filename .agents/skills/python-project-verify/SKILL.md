@@ -58,6 +58,16 @@ ruff check src/ tests/
 
 Check that code is formatted according to ruff:
 
+```bash
+ruff format --check src/ tests/
+```
+
+**Pass criteria:** "X files already formatted" or no diff output.
+
+**If not formatted:** Run `ruff format src/ tests/` to auto-format, then re-check.
+
+**Pitfall:** `ruff format` may reflow long docstrings and import blocks. Always re-run `ruff check` after formatting because formatting can expose new lint issues.
+
 ---
 
 ## Phase 3: Type check (mypy)
@@ -109,9 +119,6 @@ pytest tests/ --cov=cdindex_parser --cov-branch --cov-report=term-missing
 **Pitfall:** Tests that call CLI `--help` or `--version` will raise `SystemExit` because `argparse` calls `sys.exit()`. Use `pytest.raises(SystemExit)`.
 
 **Pitfall:** Coverage is measured on the installed package. Install with `pip install -e .` first.
-
----
-
 
 ---
 
@@ -240,16 +247,3 @@ Report results as a table:
 | End-to-end | `parse_catalog()` round-trip | PASS/FAIL | |
 
 **Overall:** PASS if all phases pass; FAIL if any phase fails. Do not proceed to release with any FAIL.
-
----
-```bash
-ruff format --check src/ tests/
-```
-
-**Pass criteria:** "X files already formatted" or no diff output.
-
-**If not formatted:** Run `ruff format src/ tests/` to auto-format, then re-check.
-
-**Pitfall:** `ruff format` may reflow long docstrings and import blocks. Always re-run `ruff check` after formatting because formatting can expose new lint issues.
-
----

@@ -250,33 +250,7 @@ class TestToCSV:
     def test_quotes_commas_in_names(self, tmp_path):
         from cdindex_parser.models import Entry
         from datetime import datetime
-        catalog = Catalog(
-            entries=(Entry(
-                depth=0, name='File, with, commas.txt', is_dir=False,
-                size_bytes=100, mtime=datetime(2023, 1, 1),
-                path="Dir/File, with, commas.txt",
-            ),)
-        )
-        out_path = tmp_path / "out.csv"
-        to_csv(catalog, out_path)
-        content = out_path.read_text(encoding="utf-8")
-        assert '"Dir/File, with, commas.txt"' in content
 
-
-class TestToJSON:
-    def test_writes_version_and_entries(self, flat_catalog, tmp_path):
-        out_path = tmp_path / "out.json"
-        to_json(flat_catalog, out_path)
-        import json
-        data = json.loads(out_path.read_text(encoding="utf-8"))
-        assert data["version"] == 1
-        assert "entries" in data
-        assert len(data["entries"]) == len(flat_catalog.entries)
-
-    def test_ensure_ascii_false(self, tmp_path):
-        """Non-ASCII names written as-is, not escaped."""
-        from datetime import datetime
-        from cdindex_parser.models import Entry, Catalog
 
 ---
 
@@ -427,5 +401,3 @@ pytest tests/ --cov=cdindex_parser --cov-branch --cov-report=term-missing
 **Pitfall:** Fixtures that create files must use `tmp_path` (automatic cleanup), not hardcoded paths.
 
 **Pitfall:** Tab characters in test data must be actual `\t` characters, not spaces. Use `T = "\t"` constant.
-
----
