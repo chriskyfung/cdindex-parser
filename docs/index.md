@@ -1,14 +1,67 @@
-# Welcome to CD Index 2 Parser Documentation
+# CD Index 2 Parser
 
-**CD Index 2 Parser** is a tool to convert legacy `*.IDX` (file tree) and `*.FILE` (properties) files from the CD Index 2 (光碟索引大師) software into modern, usable formats like CSV or JSON.
+**CD Index 2 Parser** converts legacy `*.IDX` and `*.FILE` files from CD Index 2 (光碟索引大師) into modern CSV/JSON formats, preserving the full file tree structure, sizes, and modification timestamps.
 
-This documentation will guide you through installation, usage, and provide details about the file format and API.
+This tool is for anyone who has old CD/DVD index catalogs from this popular legacy software and wants to access them with modern tools.
+
+---
 
 ## Features
 
-- Parses tab-indented tree structures from `.IDX` files.
-- Decodes file and directory properties from `.FILE` files.
-- Correctly interprets the 32-bit FAT (MS-DOS) timestamps.
-- Reconstructs full file paths from the original indented structure.
-- Supports encodings like Big5 for Traditional Chinese file names.
-- Can output to CSV and JSON.
+- Parses file and directory structures from `.IDX` and `.FILE` pairs
+- Correctly decodes the 32-bit MS-DOS FAT timestamps
+- Reconstructs full file paths from tab-indented tree structures
+- Outputs clean CSV or JSON
+- Supports encodings like UTF-16, Big5, and CP950 for Traditional Chinese file names
+- Zero runtime dependencies — pure Python standard library
+- Typed API with frozen dataclasses — importable as a library
+
+---
+
+## Quick Start
+
+Install from PyPI:
+
+```bash
+pip install cdindex-parser
+```
+
+Parse a pair of `.IDX`/`.FILE` files into CSV:
+
+```bash
+cdindex-parser mydisk results.csv
+```
+
+Or parse into JSON:
+
+```bash
+cdindex-parser mydisk results.json --format json
+```
+
+Use it as a Python library:
+
+```python
+from cdindex_parser import parse_catalog
+
+catalog = parse_catalog("mydisk.IDX", encoding="utf-16")
+for entry in catalog:
+    print(f"{entry.path}  is_dir={entry.is_dir}  size={entry.size_bytes}")
+```
+
+---
+
+## 📖 Navigation
+
+| Document | Description |
+|---|---|
+| [Installation](installation.md) | Install from PyPI or source |
+| [Usage](usage.md) | CLI flags and library examples |
+| [File Format](file-format.md) | `.IDX` / `.FILE` format details |
+| [API Reference](api.md) | Generated API documentation |
+| [Troubleshooting](troubleshooting.md) | Common issues and fixes |
+
+---
+
+## License
+
+MIT License. See [LICENSE](https://github.com/chriskyfung/cdindex-parser/blob/main/LICENSE) for details.

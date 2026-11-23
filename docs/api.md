@@ -1,27 +1,41 @@
 # API Reference
 
-The core parsing logic is contained in the `decode_cdindex.py` script. You can import its functions to use in your own projects.
+The public API of `cdindex-parser` is documented below. All types are frozen dataclasses and all functions are pure where possible.
 
-## Functions
+## Core API
 
-### `parse_file_line(line)`
+::: cdindex_parser.parse_catalog
 
-Parses a single line from a `.FILE` file.
+::: cdindex_parser.Catalog
 
-- **Parameters**: `line` (str) - A single line from a `.FILE` file.
-- **Returns**: A dictionary with keys `indent`, `type`, `size`, `ts`, `ts_str`.
+::: cdindex_parser.Entry
 
-### `parse_name_line(line)`
+::: cdindex_parser.FileRecord
 
-Parses a single line from an `.IDX` file.
+::: cdindex_parser.NameRecord
 
-- **Parameters**: `line` (str) - A single line from an `.IDX` file.
-- **Returns**: A dictionary with keys `indent`, `name`.
+## Utilities
 
-### `match_and_dump(input_path, out_path)`
+::: cdindex_parser.resolve_input_path
 
-The main function that reads a pair of `.IDX` and `.FILE` files, processes them, and writes the output to a CSV file.
+::: cdindex_parser.parser.decode_dos_datetime
 
-- **Parameters**:
-    - `input_path` (str): The base path of the input files (without extension).
-    - `out_path` (str): The path to the output CSV file.
+::: cdindex_parser.to_csv
+
+::: cdindex_parser.to_json
+
+## Exceptions
+
+All errors inherit from `CDIndexError`:
+
+::: cdindex_parser.errors.CDIndexError
+
+::: cdindex_parser.errors.InputNotFoundError
+
+::: cdindex_parser.errors.EncodingError
+
+::: cdindex_parser.errors.LineCountMismatchError
+
+::: cdindex_parser.errors.IndentMismatchError
+
+::: cdindex_parser.errors.MalformedRecordError
