@@ -206,22 +206,23 @@ Parse a real `.IDX`/`.FILE` pair and assert on the `Catalog`:
 
 ```python
 import sys, tempfile, pathlib
-sys.path.insert(0, 'src')
+
+sys.path.insert(0, "src")
 from cdindex_parser import parse_catalog, resolve_input_path
 
 # Test rstrip fix (the silent data-corruption bug)
-for p in ['MyID.IDX', 'GAME.IDX', 'DISK.IDX']:
+for p in ["MyID.IDX", "GAME.IDX", "DISK.IDX"]:
     idx, fle = resolve_input_path(p)
-    assert idx == p and fle == p[:-4] + '.FILE', f'FAIL: {p}'
+    assert idx == p and fle == p[:-4] + ".FILE", f"FAIL: {p}"
 
 # End-to-end parse
 tmpdir = pathlib.Path(tempfile.mkdtemp())
-catalog = parse_catalog(tmpdir / 'test.IDX', encoding='utf-8')
+catalog = parse_catalog(tmpdir / "test.IDX", encoding="utf-8")
 assert len(catalog) > 0
 for entry in catalog:
-    assert hasattr(entry, 'path')
-    assert hasattr(entry, 'is_dir')
-    assert hasattr(entry, 'size_bytes')
+    assert hasattr(entry, "path")
+    assert hasattr(entry, "is_dir")
+    assert hasattr(entry, "size_bytes")
 ```
 
 **Pass criteria:** All assertions pass, no exceptions.

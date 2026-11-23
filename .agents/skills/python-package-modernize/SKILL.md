@@ -50,6 +50,7 @@ Identify all the pieces that need extracting:
 # BEFORE: root script, sys.argv coupled, assert for control flow
 import sys
 
+
 def main():
     if len(sys.argv) != 3:
         sys.exit(1)
@@ -97,15 +98,22 @@ def main(argv: Sequence[str] | None = None) -> int:
        __version__ = "0.0.0+unknown"
 
    __all__ = [
-       "Catalog", "Entry", "FileRecord", "NameRecord",
-       "parse_catalog", "resolve_input_path",
-       "to_csv", "to_json", "__version__",
+       "Catalog",
+       "Entry",
+       "FileRecord",
+       "NameRecord",
+       "parse_catalog",
+       "resolve_input_path",
+       "to_csv",
+       "to_json",
+       "__version__",
    ]
    ```
 
    **`src/cdindex_parser/__main__.py`** — `python -m cdindex_parser` entry point:
    ```python
    """Module entry point for python -m cdindex_parser."""
+
    from .cli import main
 
    if __name__ == "__main__":

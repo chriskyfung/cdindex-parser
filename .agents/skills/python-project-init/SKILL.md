@@ -124,6 +124,7 @@ __all__ = [
 
 ```python
 """Module entry point for python -m <package-name>."""
+
 from .cli import main
 
 if __name__ == "__main__":

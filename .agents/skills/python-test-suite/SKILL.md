@@ -206,12 +206,18 @@ class TestBuildPaths:
 
     def test_sibling_depth_reset(self):
         entries = [
-            (0, "Root"), (1, "Sub1"), (2, "Deep1"),
-            (1, "Sub2"), (2, "Deep2"),
+            (0, "Root"),
+            (1, "Sub1"),
+            (2, "Deep1"),
+            (1, "Sub2"),
+            (2, "Deep2"),
         ]
         assert list(build_paths(entries)) == [
-            "Root", "Root/Sub1", "Root/Sub1/Deep1",
-            "Root/Sub2", "Root/Sub2/Deep2",
+            "Root",
+            "Root/Sub1",
+            "Root/Sub1/Deep1",
+            "Root/Sub2",
+            "Root/Sub2/Deep2",
         ]
 
     def test_empty_input(self):
@@ -317,7 +323,11 @@ class TestExceptionHierarchy:
         assert exc.line_number == 42
 
     def test_errors_are_value_error_catchable(self):
-        for exc_class in [LineCountMismatchError, IndentMismatchError, MalformedRecordError]:
+        for exc_class in [
+            LineCountMismatchError,
+            IndentMismatchError,
+            MalformedRecordError,
+        ]:
             try:
                 raise exc_class("test")
             except ValueError:
