@@ -1,0 +1,72 @@
+site_name: CD Index 2 Parser
+site_description: Parse CD Index 2 (光碟索引大師) IDX/FILE catalogs into CSV/JSON
+site_url: https://chriskyfung.github.io/cdindex-parser/
+repo_url: https://github.com/chriskyfung/cdindex-parser
+edit_uri: blob/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+  logo: https://raw.githubusercontent.com/chriskyfung/cdindex-parser/main/docs/logo.svg
+  favicon: https://raw.githubusercontent.com/chriskyfung/cdindex-parser/main/docs/favicon.ico
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            docstring_style: google
+            merge_init_into_class: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            show_category_heading: true
+            show_if_no_docstring: true
+            docstring_section_style: list
+            filters: ["!^_"]
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences:
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - File Format: file-format.md
+  - API Reference: api.md
+  - Troubleshooting: troubleshooting.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/chriskyfung/cdindex-parser
+  version:
+    provider: mike
+
+copyright: Copyright &copy; 2026 Chris K.Y. Fung
