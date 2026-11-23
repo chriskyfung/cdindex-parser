@@ -1,0 +1,17 @@
+# .gitattributes - normalize line endings and mark binaries
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.svg binary
+# Keep Markdown as-is for content consistency (CRLF may be intentional)
+docs/api.md text
+# Python source files
+*.py text eol=lf
+# TOML and YAML configs
+pyproject.toml text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+# Markdown docs
+docs/**/*.md text eol=lf
+# Ignore distribution / build artifacts (kept in .gitignore)

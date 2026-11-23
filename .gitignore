@@ -224,10 +224,10 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,dotenv,python,test
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
-*.csv
-*.json
-tree.html
+# Distribution / packaging
 dist/
 build/
 *.egg-info/
-data/
+
+# Test fixtures - keep sample IDX/FILE pairs and golden output files
+!tests/data/
