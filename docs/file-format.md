@@ -64,14 +64,14 @@ dos_time = ts & 0xFFFF
 dos_date = ts >> 16
 
 # Time decoding
-sec   = (dos_time & 0x1F) * 2   # 5 bits for seconds (in 2-second intervals)
-minute = (dos_time >> 5)  & 0x3F # 6 bits for minutes
-hour   = dos_time >> 11         # 5 bits for hours
+sec = (dos_time & 0x1F) * 2  # 5 bits for seconds (in 2-second intervals)
+minute = (dos_time >> 5) & 0x3F  # 6 bits for minutes
+hour = dos_time >> 11  # 5 bits for hours
 
 # Date decoding
-day    = dos_date & 0x1F        # 5 bits for day
-month  = (dos_date >> 5)  & 0xF # 4 bits for month
-year   = (dos_date >> 9)  + 1980 # 7 bits for year (offset from 1980)
+day = dos_date & 0x1F  # 5 bits for day
+month = (dos_date >> 5) & 0xF  # 4 bits for month
+year = (dos_date >> 9) + 1980  # 7 bits for year (offset from 1980)
 ```
 
 For example, the timestamp `1130591439` is decoded as `2013-11-03 14:38:30`.
