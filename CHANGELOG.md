@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-23
+
+### Added
+
+- Added `.gitattributes` to normalize line endings and mark binary files
+- Added `.pre-commit-config.yaml` with pre-commit hooks for linting and formatting
+
+### Changed
+
+- Updated `.gitignore` to exclude distribution/build artifacts and preserve test fixtures
+
+### Fixed
+
+- Fixed `resolve_input_path` to correctly strip `.IDX`/`.FILE` suffixes instead of using `rstrip` as a character set, preventing corruption of filenames like `MyID.IDX`
+
+## [0.2.0] - 2026-11-22
+
 ### Added
 
 - Initial parser for CD Index 2 `.IDX` and `.FILE` files
