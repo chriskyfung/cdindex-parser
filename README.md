@@ -62,11 +62,11 @@ for entry in catalog:
 
 | Document | Link |
 |---|---|
-| Installation | [Docs › Installation](https://chriskyfung.github.io/cdindex-parser/installation.html) |
-| Usage | [Docs › Usage](https://chriskyfung.github.io/cdindex-parser/usage.html) |
-| File Format | [Docs › File Format](https://chriskyfung.github.io/cdindex-parser/file-format.html) |
-| API Reference | [Docs › API Reference](https://chriskyfung.github.io/cdindex-parser/api.html) |
-| Troubleshooting | [Docs › Troubleshooting](https://chriskyfung.github.io/cdindex-parser/troubleshooting.html) |
+| Installation | [Docs › Installation](https://chriskyfung.github.io/cdindex-parser/installation/) |
+| Usage | [Docs › Usage](https://chriskyfung.github.io/cdindex-parser/usage/) |
+| File Format | [Docs › File Format](https://chriskyfung.github.io/cdindex-parser/file-format/) |
+| API Reference | [Docs › API Reference](https://chriskyfung.github.io/cdindex-parser/api/) |
+| Troubleshooting | [Docs › Troubleshooting](https://chriskyfung.github.io/cdindex-parser/troubleshooting/) |
 
 ---
 
