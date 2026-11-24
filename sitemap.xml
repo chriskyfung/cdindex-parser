@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://chriskyfung.github.io/cdindex2-parser/</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://chriskyfung.github.io/cdindex2-parser/api/</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://chriskyfung.github.io/cdindex2-parser/file-format/</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://chriskyfung.github.io/cdindex2-parser/installation/</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://chriskyfung.github.io/cdindex2-parser/troubleshooting/</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+    <url>
+         <loc>https://chriskyfung.github.io/cdindex2-parser/usage/</loc>
+         <lastmod>2026-11-24</lastmod>
+    </url>
+</urlset>
