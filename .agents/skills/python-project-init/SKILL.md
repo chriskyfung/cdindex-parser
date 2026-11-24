@@ -32,7 +32,7 @@ Initialize a new Python package project from scratch with a modern src-layout, t
 mkdir -p src/<package_name>/tests
 ```
 
-**Package naming convention:** Use lowercase with hyphens for the project name (e.g., `cdindex-parser`), and underscores for the package directory (e.g., `cdindex_parser`).
+**Package naming convention:** Use lowercase with hyphens for the project name (e.g., `cdindex2-parser`), and underscores for the package directory (e.g., `cdindex2_parser`).
 
 ---
 

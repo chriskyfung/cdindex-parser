@@ -5,7 +5,7 @@ description: Transform a legacy Python script into a publishable, importable src
 
 # python-package-modernize
 
-Transform a legacy Python script (single-file, root-level) into a modern, publishable Python package with a `src/` layout, typed API, console script entry point, and complete packaging metadata. This skill captures the full modernization performed on `cdindex-parser` from root script → importable PyPI-ready package.
+Transform a legacy Python script (single-file, root-level) into a modern, publishable Python package with a `src/` layout, typed API, console script entry point, and complete packaging metadata. This skill captures the full modernization performed on `cdindex2-parser` from root script → importable PyPI-ready package.
 
 ---
 
@@ -61,7 +61,7 @@ def main():
 ```
 
 ```python
-# AFTER: src/cdindex_parser/cli.py, typed, testable
+# AFTER: src/cdindex2_parser/cli.py, typed, testable
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -75,17 +75,17 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 1. Create the package directory:
    ```bash
-   mkdir -p src/cdindex_parser
+   mkdir -p src/cdindex2_parser
    ```
 
 2. Move the existing script into the package using `git mv` (preserves history):
    ```bash
-   git mv decode_cdindex.py src/cdindex_parser/parser.py
+   git mv decode_cdindex.py src/cdindex2_parser/parser.py
    ```
 
 3. Create the package skeleton:
 
-   **`src/cdindex_parser/__init__.py`** — public API exports + `__version__`:
+   **`src/cdindex2_parser/__init__.py`** — public API exports + `__version__`:
    ```python
    from importlib.metadata import PackageNotFoundError, version
    from .exporters import to_csv, to_json
@@ -93,7 +93,7 @@ def main(argv: Sequence[str] | None = None) -> int:
    from .parser import parse_catalog, resolve_input_path
 
    try:
-       __version__ = version("cdindex-parser")
+       __version__ = version("cdindex2-parser")
    except PackageNotFoundError:
        __version__ = "0.0.0+unknown"
 
@@ -110,9 +110,9 @@ def main(argv: Sequence[str] | None = None) -> int:
    ]
    ```
 
-   **`src/cdindex_parser/__main__.py`** — `python -m cdindex_parser` entry point:
+   **`src/cdindex2_parser/__main__.py`** — `python -m cdindex2_parser` entry point:
    ```python
-   """Module entry point for python -m cdindex_parser."""
+   """Module entry point for python -m cdindex2_parser."""
 
    from .cli import main
 
@@ -120,9 +120,9 @@ def main(argv: Sequence[str] | None = None) -> int:
        raise SystemExit(main())
    ```
 
-   **`src/cdindex_parser/py.typed`** — empty file, PEP 561 marker for typed packages:
+   **`src/cdindex2_parser/py.typed`** — empty file, PEP 561 marker for typed packages:
    ```bash
-   touch src/cdindex_parser/py.typed
+   touch src/cdindex2_parser/py.typed
    ```
 
 **Pitfall:** `__main__.py` must guard `raise SystemExit(main())` with `if __name__ == "__main__":`, otherwise importing the module triggers program exit.
@@ -162,7 +162,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cdindex-parser"
+name = "cdindex2-parser"
 version = "0.3.0"
 description = "Parse CD Index 2 IDX/FILE catalogs into CSV/JSON"
 readme = "README.md"
@@ -188,18 +188,18 @@ dev = ["pytest>=8", "pytest-cov>=5", "mypy>=1.11", "ruff>=0.6", "build>=1.2", "t
 docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.26"]
 
 [project.urls]
-Homepage = "https://github.com/chriskyfung/cdindex-parser"
-Repository = "https://github.com/chriskyfung/cdindex-parser"
+Homepage = "https://github.com/chriskyfung/cdindex2-parser"
+Repository = "https://github.com/chriskyfung/cdindex2-parser"
 
 [project.scripts]
-cdindex-parser = "cdindex_parser.cli:main"
+cdindex2-parser = "cdindex2_parser.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["cdindex_parser*"]
+include = ["cdindex2_parser*"]
 
 [tool.setuptools.package-data]
-cdindex_parser = ["py.typed"]
+cdindex2_parser = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -207,7 +207,7 @@ pythonpath = ["src"]
 
 [tool.coverage.run]
 branch = true
-source = ["cdindex_parser"]
+source = ["cdindex2_parser"]
 
 [tool.coverage.report]
 show_missing = true
@@ -231,13 +231,13 @@ fail_under = 80
 
 2. Test the CLI:
    ```bash
-   cdindex-parser --help
-   cdindex-parser --version
+   cdindex2-parser --help
+   cdindex2-parser --version
    ```
 
 3. Test the import:
    ```bash
-   python -c "import cdindex_parser; print(cdindex_parser.__version__)"
+   python -c "import cdindex2_parser; print(cdindex2_parser.__version__)"
    ```
 
 4. Build and check:
@@ -246,7 +246,7 @@ fail_under = 80
    twine check dist/*
    ```
 
-**Pitfall:** The console script entry point must point to `cdindex_parser.cli:main`, not `scripts.decode_cdindex:main` (the old root script path).
+**Pitfall:** The console script entry point must point to `cdindex2_parser.cli:main`, not `scripts.decode_cdindex:main` (the old root script path).
 
 ---
 
@@ -277,7 +277,7 @@ Run the full verification sweep:
 ruff check src/ tests/ && \
 ruff format --check src/ tests/ && \
 mypy src && \
-pytest tests/ --cov=cdindex_parser --cov-branch && \
+pytest tests/ --cov=cdindex2_parser --cov-branch && \
 python -m build && \
 twine check dist/* && \
 mkdocs build --strict

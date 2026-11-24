@@ -5,7 +5,7 @@ description: Set up GitHub Actions CI/CD for a Python package including lint/tes
 
 # python-release-pipeline
 
-Set up a complete GitHub Actions CI/CD pipeline for a Python package: CI matrix (lint + test + build), release workflow (TestPyPI → PyPI → GitHub Release via trusted publishing/OIDC), docs deploy, and Dependabot. This skill captures the full CI/CD automation implemented for `cdindex-parser`.
+Set up a complete GitHub Actions CI/CD pipeline for a Python package: CI matrix (lint + test + build), release workflow (TestPyPI → PyPI → GitHub Release via trusted publishing/OIDC), docs deploy, and Dependabot. This skill captures the full CI/CD automation implemented for `cdindex2-parser`.
 
 ---
 
@@ -78,7 +78,7 @@ jobs:
         with: { python-version: "${{ matrix.python-version }}", cache: "pip" }
       - run: python -m pip install --upgrade pip
       - run: pip install -e ".[dev]"
-      - run: pytest --cov=cdindex_parser --cov-branch --cov-report=xml --junitxml=junit.xml
+      - run: pytest --cov=cdindex2_parser --cov-branch --cov-report=xml --junitxml=junit.xml
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -99,8 +99,8 @@ jobs:
       - run: |
           python -m venv /tmp/venv
           /tmp/venv/bin/pip install dist/*.whl
-          /tmp/venv/bin/cdindex-parser --help
-          /tmp/venv/bin/python -c "import cdindex_parser; print(cdindex_parser.__version__)"
+          /tmp/venv/bin/cdindex2-parser --help
+          /tmp/venv/bin/python -c "import cdindex2_parser; print(cdindex2_parser.__version__)"
         shell: bash
       - uses: actions/upload-artifact@v7
         with: { name: dist, path: dist/ }
@@ -311,9 +311,9 @@ JSON
 2. Go to Account settings → Pending publishers
 3. Click "Add a pending publisher"
 4. Fill in:
-   - **PyPI project name:** `cdindex-parser`
+   - **PyPI project name:** `cdindex2-parser`
    - **Repository owner:** `chriskyfung`
-   - **Repository name:** `cdindex-parser`
+   - **Repository name:** `cdindex2-parser`
    - **Workflow filename:** `.github/workflows/release.yml`
    - **Environment:** `testpypi`
 5. Click "Add a pending publisher"
@@ -337,8 +337,8 @@ JSON
 
 3. Verify on PyPI:
    ```bash
-   pip install cdindex-parser
-   cdindex-parser --help
+   pip install cdindex2-parser
+   cdindex2-parser --help
    ```
 
 **Pitfall:** If the tag doesn't match `pyproject.toml` version, the build job fails. Fix version mismatch and retag.

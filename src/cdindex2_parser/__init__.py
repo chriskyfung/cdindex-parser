@@ -1,4 +1,4 @@
-"""Public API for cdindex-parser."""
+"""Public API for cdindex2-parser."""
 
 from importlib.metadata import PackageNotFoundError, version
 
@@ -7,7 +7,7 @@ from .models import Catalog, Entry, FileRecord, NameRecord
 from .parser import parse_catalog, parse_file_line, parse_name_line, resolve_input_path
 
 try:
-    __version__ = version("cdindex-parser")
+    __version__ = version("cdindex2-parser")
 except PackageNotFoundError:
     __version__ = "0.0.0+unknown"
 

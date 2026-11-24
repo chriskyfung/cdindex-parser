@@ -1,4 +1,4 @@
-"""Data models for cdindex-parser catalogs."""
+"""Data models for cdindex2-parser catalogs."""
 
 from collections.abc import Iterator
 from dataclasses import dataclass

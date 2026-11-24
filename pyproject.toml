@@ -3,10 +3,10 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cdindex-parser"
+name = "cdindex2-parser"
 version = "1.0.0"
 description = "Parse CD Index 2 IDX/FILE files into CSV/JSON"
-authors = [{name = "Chris Fung", email = "chris@example.com"}]
+authors = [{name = "Chris K.Y. Fung", email = "chris@example.com"}]
 license = "MIT"
 license-files = ["LICENSE"]
 readme = "README.md"
@@ -50,7 +50,7 @@ ignore = ["D203", "D213"]
 
 [tool.coverage.run]
 branch = true
-source = ["cdindex_parser"]
+source = ["cdindex2_parser"]
 
 [tool.coverage.report]
 show_missing = true
@@ -71,21 +71,21 @@ dev = [
 docs = ["mkdocs-material>=9.5", "mkdocstrings[python]>=0.26"]
 
 [project.scripts]
-cdindex-parser = "cdindex_parser.cli:main"
+cdindex2-parser = "cdindex2_parser.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/chriskyfung/cdindex-parser"
-Documentation = "https://chriskyfung.github.io/cdindex-parser/"
-Repository = "https://github.com/chriskyfung/cdindex-parser"
-Issues = "https://github.com/chriskyfung/cdindex-parser/issues"
-Changelog = "https://github.com/chriskyfung/cdindex-parser/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/chriskyfung/cdindex2-parser"
+Documentation = "https://chriskyfung.github.io/cdindex2-parser/"
+Repository = "https://github.com/chriskyfung/cdindex2-parser"
+Issues = "https://github.com/chriskyfung/cdindex2-parser/issues"
+Changelog = "https://github.com/chriskyfung/cdindex2-parser/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["cdindex_parser*"]
+include = ["cdindex2_parser*"]
 
 [tool.setuptools.package-data]
-cdindex_parser = ["py.typed"]
+cdindex2_parser = ["py.typed"]
 
 [tool.mypy]
 python_version = "3.10"

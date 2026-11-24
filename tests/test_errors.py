@@ -1,8 +1,8 @@
-"""Tests for cdindex_parser.errors — exception hierarchy."""
+"""Tests for cdindex2_parser.errors — exception hierarchy."""
 
 import pytest
 
-from cdindex_parser.errors import (
+from cdindex2_parser.errors import (
     CDIndexError,
     EncodingError,
     IndentMismatchError,

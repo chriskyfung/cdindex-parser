@@ -1,4 +1,4 @@
-"""CSV and JSON exporters for cdindex-parser catalogs."""
+"""CSV and JSON exporters for cdindex2-parser catalogs."""
 
 import csv
 import json

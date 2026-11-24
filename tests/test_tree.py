@@ -1,6 +1,6 @@
-"""Tests for cdindex_parser.tree — path reconstruction."""
+"""Tests for cdindex2_parser.tree — path reconstruction."""
 
-from cdindex_parser.tree import build_paths
+from cdindex2_parser.tree import build_paths
 
 
 class TestBuildPaths:

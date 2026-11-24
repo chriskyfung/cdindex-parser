@@ -1,8 +1,8 @@
-"""Exception hierarchy for cdindex-parser."""
+"""Exception hierarchy for cdindex2-parser."""
 
 
 class CDIndexError(Exception):
-    """Base exception for all cdindex-parser errors."""
+    """Base exception for all cdindex2-parser errors."""
 
 
 class InputNotFoundError(CDIndexError, FileNotFoundError):

@@ -5,7 +5,7 @@ description: Re-slice work into atomic Conventional Commits that each build and 
 
 # atomic-commit-slicing
 
-Re-slice a large commit or branch into atomic, independently-green Conventional Commits. Each commit must build, import, and pass tests on its own. This skill captures the commit-slicing methodology used during the `cdindex-parser` restructure (16 atomic commits from `main` → `test/core`).
+Re-slice a large commit or branch into atomic, independently-green Conventional Commits. Each commit must build, import, and pass tests on its own. This skill captures the commit-slicing methodology used during the `cdindex2-parser` restructure (16 atomic commits from `main` → `test/core`).
 
 ---
 

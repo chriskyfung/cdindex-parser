@@ -1,4 +1,4 @@
-"""Core parsing logic for cdindex-parser IDX/FILE catalogs."""
+"""Core parsing logic for cdindex2-parser IDX/FILE catalogs."""
 
 from datetime import datetime
 from pathlib import Path
@@ -247,7 +247,7 @@ def match_and_dump(
     """Compatibility wrapper that mimics the original ``match_and_dump``.
 
     .. deprecated:: 0.3.0
-        Use ``cdindex_parser.parse_catalog`` + ``cdindex_parser.exporters``
+        Use ``cdindex2_parser.parse_catalog`` + ``cdindex2_parser.exporters``
         instead.
     """
     from .exporters import to_csv
