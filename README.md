@@ -1,5 +1,6 @@
 # CD Index 2 Parser
 
+[![codecov](https://codecov.io/gh/chriskyfung/cdindex-parser/graph/badge.svg?token=AHQ1APGM2W)](https://codecov.io/gh/chriskyfung/cdindex-parser)
 [![CI](https://github.com/chriskyfung/cdindex-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/chriskyfung/cdindex-parser/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/cdindex-parser)](https://pypi.org/project/cdindex-parser/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/cdindex-parser)](https://pypi.org/project/cdindex-parser/)
