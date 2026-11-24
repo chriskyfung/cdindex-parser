@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- Renamed import package `cdindex_parser` → `cdindex2_parser` to align with the `cdindex2-parser` distribution name
 - Migrated from root-level `decode_cdindex.py` script to `src/cdindex2_parser` package
 - Replaced `dict` returns with typed dataclasses (`FileRecord`, `NameRecord`, `Entry`, `Catalog`)
 - Replaced `assert` flow control with typed exceptions (`LineCountMismatchError`, `IndentMismatchError`, `MalformedRecordError`)
