@@ -1,7 +1,7 @@
 site_name: CD Index 2 Parser
 site_description: Parse CD Index 2 (光碟索引大師) IDX/FILE catalogs into CSV/JSON
-site_url: https://chriskyfung.github.io/cdindex-parser/
-repo_url: https://github.com/chriskyfung/cdindex-parser
+site_url: https://chriskyfung.github.io/cdindex2-parser/
+repo_url: https://github.com/chriskyfung/cdindex2-parser
 edit_uri: blob/main/docs/
 
 theme:
@@ -65,7 +65,7 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/chriskyfung/cdindex-parser
+      link: https://github.com/chriskyfung/cdindex2-parser
   version:
     provider: mike
 

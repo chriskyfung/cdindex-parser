@@ -7,7 +7,7 @@ If you see garbled characters for file names (especially with non-ASCII characte
 **Solution**: Use the `--encoding` option:
 
 ```bash
-cdindex-parser mydisk results.csv --encoding big5
+cdindex2-parser mydisk results.csv --encoding big5
 ```
 
 Or, when using the library:
@@ -44,4 +44,4 @@ If the timestamps look incorrect (e.g., a wrong year), verify you are using the 
 
 You might see an `InputNotFoundError`. This means either the `.IDX` or `.FILE` file could not be found.
 
-**Solution**: Ensure both files exist with the same base name (e.g. `mydisk.IDX` and `mydisk.FILE`), and that you passed the correct base name or path to `cdindex-parser`.
+**Solution**: Ensure both files exist with the same base name (e.g. `mydisk.IDX` and `mydisk.FILE`), and that you passed the correct base name or path to `cdindex2-parser`.

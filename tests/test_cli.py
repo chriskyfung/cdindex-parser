@@ -1,11 +1,11 @@
-"""Tests for cdindex_parser.cli — command-line interface."""
+"""Tests for cdindex2_parser.cli — command-line interface."""
 
 import argparse
 from pathlib import Path
 
 import pytest
 
-from cdindex_parser.cli import build_parser, main
+from cdindex2_parser.cli import build_parser, main
 
 
 class TestBuildParser:
@@ -82,7 +82,7 @@ class TestMainModule:
     """Tests for __main__.py module entry point."""
 
     def test_main_module_has_main(self):
-        from cdindex_parser import __main__
+        from cdindex2_parser import __main__
 
         assert hasattr(__main__, "main")
         assert callable(__main__.main)

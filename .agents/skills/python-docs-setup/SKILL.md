@@ -5,7 +5,7 @@ description: Set up MkDocs documentation site with API reference, GitHub Pages d
 
 # python-docs-setup
 
-Set up a MkDocs Material documentation site with auto-generated API reference via mkdocstrings, GitHub Pages deployment via GitHub Actions, and docs CI workflow. This skill captures the docs setup implemented for `cdindex-parser`.
+Set up a MkDocs Material documentation site with auto-generated API reference via mkdocstrings, GitHub Pages deployment via GitHub Actions, and docs CI workflow. This skill captures the docs setup implemented for `cdindex2-parser`.
 
 ---
 

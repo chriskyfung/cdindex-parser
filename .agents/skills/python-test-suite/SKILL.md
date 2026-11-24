@@ -5,7 +5,7 @@ description: Generate a comprehensive pytest suite with fixtures, parametrizatio
 
 # python-test-suite
 
-Generate a comprehensive pytest suite for a Python package: fixtures (conftest.py), test modules organized by source module, parametrized cases, error-path tests, golden files, and a coverage gate (`fail_under = 80`). This skill captures the test suite implemented for `cdindex-parser` (75 tests, 93% branch coverage).
+Generate a comprehensive pytest suite for a Python package: fixtures (conftest.py), test modules organized by source module, parametrized cases, error-path tests, golden files, and a coverage gate (`fail_under = 80`). This skill captures the test suite implemented for `cdindex2-parser` (75 tests, 93% branch coverage).
 
 ---
 
@@ -32,7 +32,7 @@ Generate a comprehensive pytest suite for a Python package: fixtures (conftest.p
 `conftest.py` defines reusable fixtures that create temp `.IDX`/`.FILE` pairs. Use `tmp_path` for isolation.
 
 ```python
-"""Pytest fixtures for cdindex-parser tests."""
+"""Pytest fixtures for cdindex2-parser tests."""
 
 from pathlib import Path
 
@@ -92,7 +92,7 @@ def big5_pair(tmp_path):
 def flat_catalog():
     """A simple Catalog with two entries for exporter tests."""
     from datetime import datetime
-    from cdindex_parser.models import Catalog, Entry
+    from cdindex2_parser.models import Catalog, Entry
 
     return Catalog(
         entries=(
@@ -174,12 +174,12 @@ class TestParseCatalog:
     def test_line_count_mismatch(self, tmp_path):
         (tmp_path / "bad.IDX").write_text("A\nB\n", encoding="utf-8")
         (tmp_path / "bad.FILE").write_text("D0.25482084\n", encoding="utf-8")
-        from cdindex_parser.errors import LineCountMismatchError
+        from cdindex2_parser.errors import LineCountMismatchError
         with pytest.raises(LineCountMismatchError):
             parse_catalog(tmp_path / "bad", encoding="utf-8")
 
     def test_missing_file(self, tmp_path):
-        from cdindex_parser.errors import InputNotFoundError
+        from cdindex2_parser.errors import InputNotFoundError
         with pytest.raises(InputNotFoundError):
             parse_catalog(tmp_path / "nonexistent", encoding="utf-8")
 ```
@@ -255,7 +255,7 @@ class TestToCSV:
         assert b"\r\r" not in content
 
     def test_quotes_commas_in_names(self, tmp_path):
-        from cdindex_parser.models import Entry
+        from cdindex2_parser.models import Entry
         from datetime import datetime
 
 
@@ -350,7 +350,7 @@ In `pyproject.toml`:
 ```toml
 [tool.coverage.run]
 branch = true
-source = ["cdindex_parser"]
+source = ["cdindex2_parser"]
 
 [tool.coverage.report]
 show_missing = true
@@ -367,7 +367,7 @@ exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedE
 ## Step 9: Run and verify
 
 ```bash
-pytest tests/ --cov=cdindex_parser --cov-branch --cov-report=term-missing
+pytest tests/ --cov=cdindex2_parser --cov-branch --cov-report=term-missing
 ```
 
 **Pass criteria:** All tests pass, coverage ≥ 80%.

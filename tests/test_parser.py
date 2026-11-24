@@ -1,17 +1,17 @@
-"""Tests for cdindex_parser.parser — parsing logic and input-path resolution."""
+"""Tests for cdindex2_parser.parser — parsing logic and input-path resolution."""
 
 from datetime import datetime
 from pathlib import Path
 
 import pytest
 
-from cdindex_parser.errors import (
+from cdindex2_parser.errors import (
     IndentMismatchError,
     InputNotFoundError,
     LineCountMismatchError,
     MalformedRecordError,
 )
-from cdindex_parser.parser import (
+from cdindex2_parser.parser import (
     decode_dos_datetime,
     match_and_dump,
     parse_catalog,

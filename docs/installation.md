@@ -2,10 +2,10 @@
 
 ## From PyPI
 
-The easiest way to install `cdindex-parser` is from the Python Package Index (PyPI):
+The easiest way to install `cdindex2-parser` is from the Python Package Index (PyPI):
 
 ```bash
-pip install cdindex-parser
+pip install cdindex2-parser
 ```
 
 This requires Python 3.10 or newer.
@@ -15,8 +15,8 @@ This requires Python 3.10 or newer.
 You can clone the repository and install it in editable mode:
 
 ```bash
-git clone https://github.com/chriskyfung/cdindex-parser.git
-cd cdindex-parser
+git clone https://github.com/chriskyfung/cdindex2-parser.git
+cd cdindex2-parser
 pip install -e .
 ```
 

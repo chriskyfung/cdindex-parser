@@ -1,9 +1,9 @@
-"""Tests for cdindex_parser.exporters — CSV and JSON export."""
+"""Tests for cdindex2_parser.exporters — CSV and JSON export."""
 
 import json
 
-from cdindex_parser.exporters import CSV_COLUMNS, iter_rows, to_csv, to_json
-from cdindex_parser.models import Catalog, Entry
+from cdindex2_parser.exporters import CSV_COLUMNS, iter_rows, to_csv, to_json
+from cdindex2_parser.models import Catalog, Entry
 
 
 class TestIterRows:

@@ -1,4 +1,4 @@
-"""Path reconstruction for cdindex-parser catalog trees."""
+"""Path reconstruction for cdindex2-parser catalog trees."""
 
 from collections.abc import Iterator
 

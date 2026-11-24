@@ -5,7 +5,7 @@ description: Run the full verification suite for a Python project and report pas
 
 # python-project-verify
 
-Run the complete verification suite for a Python project: lint, format, type check, tests with coverage gate, build, metadata validation, docs build, CLI smoke test, and end-to-end API call. Report pass/fail for each check and interpret failures. This skill captures the verification checklist from `cdindex-parser`'s AGENTS.md.
+Run the complete verification suite for a Python project: lint, format, type check, tests with coverage gate, build, metadata validation, docs build, CLI smoke test, and end-to-end API call. Report pass/fail for each check and interpret failures. This skill captures the verification checklist from `cdindex2-parser`'s AGENTS.md.
 
 ---
 
@@ -101,7 +101,7 @@ mypy src
 Run pytest with branch coverage:
 
 ```bash
-pytest tests/ --cov=cdindex_parser --cov-branch --cov-report=term-missing
+pytest tests/ --cov=cdindex2_parser --cov-branch --cov-report=term-missing
 ```
 
 **Pass criteria:**
@@ -165,18 +165,18 @@ Install the wheel in a fresh venv and smoke test:
 ```bash
 python -m venv /tmp/venv
 /tmp/venv/bin/pip install dist/*.whl
-/tmp/venv/bin/cdindex-parser --help
-/tmp/venv/bin/python -c "import cdindex_parser; print(cdindex_parser.__version__)"
+/tmp/venv/bin/cdindex2-parser --help
+/tmp/venv/bin/python -c "import cdindex2_parser; print(cdindex2_parser.__version__)"
 ```
 
 **Pass criteria:**
-- `cdindex-parser --help` exits 0 and shows usage
+- `cdindex2-parser --help` exits 0 and shows usage
 - Import works and prints version
 - Exit code 0 for all commands
 
 **Pitfall:** The wheel must include `py.typed` for typed packages. Check `[tool.setuptools.package-data]`.
 
-**Pitfall:** The console script entry point must be `cdindex-parser = "cdindex_parser.cli:main"`.
+**Pitfall:** The console script entry point must be `cdindex2-parser = "cdindex2_parser.cli:main"`.
 
 ---
 
@@ -208,7 +208,7 @@ Parse a real `.IDX`/`.FILE` pair and assert on the `Catalog`:
 import sys, tempfile, pathlib
 
 sys.path.insert(0, "src")
-from cdindex_parser import parse_catalog, resolve_input_path
+from cdindex2_parser import parse_catalog, resolve_input_path
 
 # Test rstrip fix (the silent data-corruption bug)
 for p in ["MyID.IDX", "GAME.IDX", "DISK.IDX"]:
@@ -243,7 +243,7 @@ Report results as a table:
 | Tests | `pytest tests/ --cov` | PASS/FAIL | Coverage: X% |
 | Build | `python -m build` | PASS/FAIL | |
 | Metadata | `twine check dist/*` | PASS/FAIL | |
-| CLI smoke | venv + `cdindex-parser --help` | PASS/FAIL | |
+| CLI smoke | venv + `cdindex2-parser --help` | PASS/FAIL | |
 | Docs | `mkdocs build --strict` | PASS/FAIL | |
 | End-to-end | `parse_catalog()` round-trip | PASS/FAIL | |
 

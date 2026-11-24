@@ -1,4 +1,4 @@
-"""Module entry point for ``python -m cdindex_parser``."""
+"""Module entry point for ``python -m cdindex2_parser``."""
 
 from .cli import main
 

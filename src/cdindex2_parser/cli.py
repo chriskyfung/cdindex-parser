@@ -1,4 +1,4 @@
-"""Command-line interface for cdindex-parser."""
+"""Command-line interface for cdindex2-parser."""
 
 import argparse
 import sys
@@ -14,7 +14,7 @@ from .parser import parse_catalog, resolve_input_path
 def build_parser() -> argparse.ArgumentParser:
     """Build the argument parser for the CLI."""
     parser = argparse.ArgumentParser(
-        prog="cdindex-parser",
+        prog="cdindex2-parser",
         description="Parse CD Index 2 (光碟索引大師) IDX/FILE catalogs into CSV/JSON",
     )
     parser.add_argument(
@@ -44,7 +44,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--version",
         action="version",
-        version=f"cdindex-parser {metadata.version('cdindex-parser')}",
+        version=f"cdindex2-parser {metadata.version('cdindex2-parser')}",
     )
     return parser
 

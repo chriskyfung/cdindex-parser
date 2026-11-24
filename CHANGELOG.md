@@ -9,8 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Typed public API with frozen dataclasses (`Catalog`, `Entry`, `FileRecord`, `NameRecord`)
-- `src/cdindex_parser/` package layout with `py.typed` marker (PEP 561)
-- `cdindex-parser` console script with argparse CLI (`--encoding`, `--format`, `--version`)
+- `src/cdindex2_parser/` package layout with `py.typed` marker (PEP 561)
+- `cdindex2-parser` console script with argparse CLI (`--encoding`, `--format`, `--version`)
 - JSON export (`to_json`) alongside existing CSV export (`to_csv`)
 - Configurable input encoding (UTF-16 default, Big5, CP950 supported)
 - `resolve_input_path()` helper fixing silent name corruption bug
@@ -23,11 +23,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Migrated from root-level `decode_cdindex.py` script to `src/cdindex_parser` package
+- Migrated from root-level `decode_cdindex.py` script to `src/cdindex2_parser` package
 - Replaced `dict` returns with typed dataclasses (`FileRecord`, `NameRecord`, `Entry`, `Catalog`)
 - Replaced `assert` flow control with typed exceptions (`LineCountMismatchError`, `IndentMismatchError`, `MalformedRecordError`)
-- Renamed CLI from `decode_cdindex.py` to `cdindex-parser`
-- Renamed console script entry point from `scripts.decode_cdindex` to `cdindex_parser.cli:main`
+- Renamed CLI from `decode_cdindex.py` to `cdindex2-parser`
+- Renamed console script entry point from `scripts.decode_cdindex` to `cdindex2_parser.cli:main`
 - Bumped minimum Python to 3.10
 - Switched license metadata to PEP 639 SPDX form (`license = "MIT"` + `license-files`)
 

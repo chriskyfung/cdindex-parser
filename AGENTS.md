@@ -1,4 +1,4 @@
-# AGENTS.md — cdindex-parser
+# AGENTS.md — cdindex2-parser
 
 This file is the single source of truth for AI agents (and humans) working on this repository. Read it before making any change.
 
@@ -6,18 +6,18 @@ This file is the single source of truth for AI agents (and humans) working on th
 
 ## Project Overview
 
-**cdindex-parser** converts legacy `*.IDX` / `*.FILE` catalogs from **CD Index 2** (光碟索引大師) into modern **CSV / JSON**, preserving the full file tree structure, sizes, and modification timestamps.
+**cdindex2-parser** converts legacy `*.IDX` / `*.FILE` catalogs from **CD Index 2** (光碟索引大師) into modern **CSV / JSON**, preserving the full file tree structure, sizes, and modification timestamps.
 
 | Property | Value |
 |---|---|
 | Language | Python 3 |
 | Runtime deps | None (standard library only) |
 | Minimum Python | `>=3.10` |
-| Package layout | `src/cdindex_parser/` |
-| Console script | `cdindex-parser` |
+| Package layout | `src/cdindex2_parser/` |
+| Console script | `cdindex2-parser` |
 | Build backend | `setuptools >=77` |
 | License | MIT (PEP 639: `license = "MIT"` + `license-files`) |
-| Public entry point | `cdindex_parser.parse_catalog()` |
+| Public entry point | `cdindex2_parser.parse_catalog()` |
 
 Input: `.IDX` (names / tree structure via tab indentation) + `.FILE` (properties `[D|F]<size>.<timestamp>`).  
 Output: CSV with columns `FullPath,IsDir,SizeBytes,MtimeStr`, or JSON with schema version 1.
@@ -27,7 +27,7 @@ Output: CSV with columns `FullPath,IsDir,SizeBytes,MtimeStr`, or JSON with schem
 ## Repository Layout
 
 ```
-cdindex-parser/
+cdindex2-parser/
 ├── .github/
 │   ├── workflows/
 │   │   ├── ci.yml          # lint / test matrix / build / CI gate
@@ -43,9 +43,9 @@ cdindex-parser/
 │   ├── api.md              # mkdocstrings auto-generated reference
 │   └── troubleshooting.md
 ├── mkdocs.yml
-├── src/cdindex_parser/
+├── src/cdindex2_parser/
 │   ├── __init__.py         # public API, __version__
-│   ├── __main__.py         # python -m cdindex_parser
+│   ├── __main__.py         # python -m cdindex2_parser
 │   ├── cli.py              # argparse CLI: --encoding, --format, --version
 │   ├── errors.py           # typed exception hierarchy (*Error suffix)
 │   ├── exporters.py        # to_csv / to_json / iter_rows
@@ -94,7 +94,7 @@ mypy src
 
 ### Test (with branch coverage gate)
 ```bash
-pytest tests/ --cov=cdindex_parser --cov-branch --cov-report=term-missing
+pytest tests/ --cov=cdindex2_parser --cov-branch --cov-report=term-missing
 ```
 Coverage gate is `fail_under = 80` in `pyproject.toml` `[tool.coverage.report]`.
 
@@ -108,8 +108,8 @@ twine check dist/*
 ```bash
 python -m venv /tmp/venv
 /tmp/venv/bin/pip install dist/*.whl
-/tmp/venv/bin/cdindex-parser --help
-/tmp/venv/bin/python -c "import cdindex_parser; print(cdindex_parser.__version__)"
+/tmp/venv/bin/cdindex2-parser --help
+/tmp/venv/bin/python -c "import cdindex2_parser; print(cdindex2_parser.__version__)"
 ```
 
 ### Build docs
@@ -122,7 +122,7 @@ mkdocs build --strict
 ruff check src/ tests/ && \
 ruff format --check src/ tests/ && \
 mypy src && \
-pytest tests/ --cov=cdindex_parser --cov-branch --cov-report=term-missing && \
+pytest tests/ --cov=cdindex2_parser --cov-branch --cov-report=term-missing && \
 python -m build && \
 twine check dist/* && \
 mkdocs build --strict
@@ -205,8 +205,8 @@ Every change must pass this checklist before merging to `main`:
 | 5 | Coverage gate | `--cov-fail-under=80` passes |
 | 6 | Build valid | `python -m build` produces `dist/*.whl` + `*.tar.gz` |
 | 7 | Metadata valid | `twine check dist/*` → PASSED |
-| 8 | CLI works | `/tmp/venv/bin/cdindex-parser --help` exits 0 |
-| 9 | Import works | `python -c "import cdindex_parser; print(cdindex_parser.__version__)"` |
+| 8 | CLI works | `/tmp/venv/bin/cdindex2-parser --help` exits 0 |
+| 9 | Import works | `python -c "import cdindex2_parser; print(cdindex2_parser.__version__)"` |
 | 10 | Docs build | `mkdocs build --strict` → clean |
 | 11 | End-to-end | `parse_catalog()` on a real `.IDX`/`.FILE` pair produces correct CSV/JSON |
 
@@ -228,7 +228,7 @@ These are concrete mistakes made during this migration. **Do not repeat them.**
 | 5 | `dict[str, object]` loses field types for `Entry` construction. | mypy `arg-type` errors on every field. | Build `Entry` directly from typed records; no intermediate `dict`. |
 | 6 | `EncodingError` extends `UnicodeDecodeError` → `__init__` requires **5 args** (`encoding, object, start, end, reason`). | `TypeError: takes exactly 5 arguments` when raising with one arg. | Don't subclass `UnicodeDecodeError` unless you pass all 5 args; use plain `CDIndexError` subclass instead, or pass all 5. |
 | 7 | `argparse` calls `sys.exit()` via `SystemExit`. | Tests calling `main(["--help"])` raise `SystemExit` instead of returning. | Wrap `main()` calls in `pytest.raises(SystemExit)` and assert `.code`. |
-| 8 | `__main__.py` calls `raise SystemExit(main())` at import time. | Importing `cdindex_parser.__main__` triggers program exit. | Guard with `if __name__ == "__main__":`. |
+| 8 | `__main__.py` calls `raise SystemExit(main())` at import time. | Importing `cdindex2_parser.__main__` triggers program exit. | Guard with `if __name__ == "__main__":`. |
 | 9 | Shell heredocs / `python3 -c "..."` with nested quotes fail unpredictably. | `unexpected EOF`, `command not found`. | Write multi-line Python/scripts to a `.py` file first, then execute it. |
 | 10 | Tests written against `main` branch don't survive rebasing onto `refactor/core`. | Broken imports after branch switch. | Re-verify prior-phase changes survived the new branch before continuing. |
 
@@ -251,7 +251,7 @@ These are concrete mistakes made during this migration. **Do not repeat them.**
 ## Adding a New Feature
 
 1. Create branch: `git checkout -b feat/<name> main`
-2. Add/change code in `src/cdindex_parser/`
+2. Add/change code in `src/cdindex2_parser/`
 3. Add tests in `tests/`
 4. Update docs in `docs/` if user-facing
 5. Update `CHANGELOG.md`

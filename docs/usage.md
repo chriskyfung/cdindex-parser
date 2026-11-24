@@ -1,17 +1,17 @@
 # Usage Guide
 
-`cdindex-parser` can be used as a command-line tool or as a Python library.
+`cdindex2-parser` can be used as a command-line tool or as a Python library.
 
 ## Command-Line Interface (CLI)
 
-The `cdindex-parser` command is installed automatically when you install the package.
+The `cdindex2-parser` command is installed automatically when you install the package.
 
 ### Basic Parsing
 
 To parse a pair of `.IDX`/`.FILE` files into a CSV file, provide the base name of the input files:
 
 ```bash
-cdindex-parser mydisk results.csv
+cdindex2-parser mydisk results.csv
 ```
 
 This looks for `mydisk.IDX` and `mydisk.FILE`, processes them, and writes `results.csv`.
@@ -19,7 +19,7 @@ This looks for `mydisk.IDX` and `mydisk.FILE`, processes them, and writes `resul
 You can also pass the `.IDX` path directly:
 
 ```bash
-cdindex-parser mydisk.IDX results.csv
+cdindex2-parser mydisk.IDX results.csv
 ```
 
 ### CLI Options
@@ -37,19 +37,19 @@ cdindex-parser mydisk.IDX results.csv
 Parse to CSV (format inferred from `.csv` suffix):
 
 ```bash
-cdindex-parser mydisk results.csv
+cdindex2-parser mydisk results.csv
 ```
 
 Parse to JSON:
 
 ```bash
-cdindex-parser mydisk results.json --format json
+cdindex2-parser mydisk results.json --format json
 ```
 
 Use a non-default encoding (e.g. Big5 for Traditional Chinese names):
 
 ```bash
-cdindex-parser mydisk results.csv --encoding big5
+cdindex2-parser mydisk results.csv --encoding big5
 ```
 
 ### Output Format
@@ -84,7 +84,7 @@ cdindex-parser mydisk results.csv --encoding big5
 Import and use the typed API directly:
 
 ```python
-from cdindex_parser import parse_catalog, Catalog
+from cdindex2_parser import parse_catalog, Catalog
 
 # Parse an IDX/FILE pair
 catalog: Catalog = parse_catalog("mydisk.IDX", encoding="utf-16")

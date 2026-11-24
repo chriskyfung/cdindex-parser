@@ -1,10 +1,10 @@
-"""Pytest fixtures for cdindex-parser tests."""
+"""Pytest fixtures for cdindex2-parser tests."""
 
 from pathlib import Path
 
 import pytest
 
-from cdindex_parser.models import Catalog, Entry
+from cdindex2_parser.models import Catalog, Entry
 
 T = "\t"
 
